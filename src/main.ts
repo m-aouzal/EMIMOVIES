@@ -12,6 +12,7 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     provideProtractorTestingSupport(),
     provideRouter(routeConfig),
+    provideAnimations(),
     provideAnimations()
 ],
 }).catch((err) => console.error(err));

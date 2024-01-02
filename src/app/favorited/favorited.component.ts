@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Film } from '../../Model/film';
-import { FilmService } from '../../Service/film.service';
+import { Film } from '../Model/film';
+import { FilmService } from '../Services/film.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -9,16 +9,11 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-favorited',
-  standalone:true,
+  standalone: true,
   templateUrl: './favorited.component.html',
   styleUrls: ['./favorited.component.css'],
   providers: [FilmService],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    RouterLink
-  ],
+  imports: [CommonModule, HttpClientModule, FormsModule, RouterLink],
 })
 export class FavoritedComponent implements OnInit {
   favoriteFilms: Film[] = [];
@@ -28,7 +23,7 @@ export class FavoritedComponent implements OnInit {
   ngOnInit(): void {
     this.getFavoriteFilms();
   }
-  getUrl(name : any){
+  getUrl(name: any) {
     return this.filmService.getimagefromapi(name);
   }
 
@@ -38,10 +33,12 @@ export class FavoritedComponent implements OnInit {
         if (response && response.length > 0) {
           response.forEach((favorite: any) => {
             const title: string = favorite.title; // Supposons que le titre est dans la propriété "title" de l'objet
-  
+
             // Vérifie si le film existe déjà dans la liste favoriteFilms
-            const exists = this.favoriteFilms.some((film) => film.title === title);
-  
+            const exists = this.favoriteFilms.some(
+              (film) => film.title === title
+            );
+
             if (!exists) {
               this.filmService.getMovieByTitle(title).subscribe(
                 (movieDetails: any[]) => {
@@ -62,7 +59,7 @@ export class FavoritedComponent implements OnInit {
                       release_date: movieDetail.release_date,
                       video: movieDetail.video,
                       vote_average: movieDetail.vote_average,
-                      vote_count: movieDetail.vote_count
+                      vote_count: movieDetail.vote_count,
                     };
                     this.favoriteFilms.push(film);
                     console.log(this.favoriteFilms);
@@ -81,7 +78,6 @@ export class FavoritedComponent implements OnInit {
       (error) => {
         console.error('Error fetching favorite films:', error);
       }
-   
-      );
-    }   
+    );
+  }
 }
